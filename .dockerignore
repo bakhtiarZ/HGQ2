@@ -1,0 +1,34 @@
+# Keep .git so setuptools-scm can read version info
+# (Do NOT remove this unless you add a fallback_version in pyproject.toml)
+# .git/
+
+# Ignore Python cache and build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+build/
+dist/
+
+# Ignore virtual environments
+venv/
+.venv/
+.env/
+
+# Ignore common editor/OS clutter
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Logs, coverage, and temp data
+*.log
+pytest_cache/
+.coverage
+htmlcov/
+
+# Ignore temporary docker-compose volumes or cache dirs
+ccache/
