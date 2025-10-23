@@ -4,8 +4,8 @@ services:
       context: ..
       dockerfile: Docker/Dockerfile
       args:
-        HOST_UID: 1000
-        HOST_GID: 1000
+        HOST_UID: 2242
+        HOST_GID: 1201
         PYTHON_VERSION: 3.12
         VERILATOR_VERSION: 5.026
         PY_EXTRAS: test  # ← hardcode extras here, e.g. "dev", "test", or leave blank ""
@@ -21,8 +21,8 @@ services:
       # uncomment if on server where you are not sudo, comment the other one.
       # - hgq-ccache:/home/dev/.cache/ccache
       - hgq-ccache:/root/.cache/ccache   # ← was /home/dev/.cache/ccache
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ${XAUTHORITY}:${XAUTHORITY}:ro   # ← mount the actual xauth file in-place
+      # - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # - ${XAUTHORITY}:${XAUTHORITY}:ro   # ← mount the actual xauth file in-place
     
     tty: true
     stdin_open: true
@@ -31,9 +31,9 @@ services:
     environment:
       - KERAS_BACKEND=jax
       - JAX_PLATFORMS=cpu
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-      - XAUTHORITY=${XAUTHORITY}
+      # - DISPLAY=${DISPLAY}
+      # - QT_X11_NO_MITSHM=1
+      # - XAUTHORITY=${XAUTHORITY}
     devices:
       - /dev/dri:/dev/dri
       

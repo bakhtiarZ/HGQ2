@@ -86,7 +86,6 @@ pathlib.Path('/tmp/constraints.txt').write_text(f'hls4ml=={v}\n')
 print(f"Pinned hls4ml -> {v}", file=sys.stderr)
 PY
 
-
 # --- Install project (with optional extras) honoring constraints ---
 # The --pre flag allows pip to accept the 1.2.0.dev… pre-release
 RUN if [ -n "${PY_EXTRAS}" ]; then \
@@ -94,5 +93,7 @@ RUN if [ -n "${PY_EXTRAS}" ]; then \
     else \
       python -m pip install -e . --pre -c /tmp/constraints.txt; \
     fi
+
+RUN pip install -e .
 
 CMD [ "bash" ]
