@@ -83,7 +83,6 @@ filterwarnings = [
 ]
 
 env = [
-  "JAX_PLATFORMS=cpu",
   "MKL_NUM_THREADS=1",
   "OPENBLAS_NUM_THREADS=1",
   "KERAS_BACKEND=jax",

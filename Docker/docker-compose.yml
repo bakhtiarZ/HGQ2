@@ -9,8 +9,9 @@ services:
         PYTHON_VERSION: 3.12
         VERILATOR_VERSION: 5.026
         PY_EXTRAS: test  # ← hardcode extras here, e.g. "dev", "test", or leave blank ""
-        JAX_PLATFORMS: cpu
-
+    ports:
+      - "127.0.0.1:8888:8888"   # bind to localhost for safety
+      
     image: hgq-dev:latest
     container_name: hgq-dev
     working_dir: /workspace
@@ -30,12 +31,19 @@ services:
     # Optional X11/GTKWave support — uncomment if you use GUI tools
     environment:
       - KERAS_BACKEND=jax
-      - JAX_PLATFORMS=cpu
       # - DISPLAY=${DISPLAY}
       # - QT_X11_NO_MITSHM=1
       # - XAUTHORITY=${XAUTHORITY}
     devices:
       - /dev/dri:/dev/dri
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all        # or 1, or "0,1"
+              capabilities: ["gpu"]
       
 
 volumes:

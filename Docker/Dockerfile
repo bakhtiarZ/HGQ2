@@ -25,7 +25,6 @@ ARG PYTHON_VERSION=3.12
 ARG USERNAME=dev
 ARG HOST_UID=1000
 ARG HOST_GID=1000
-ARG JAX_PLATFORMS=cpu
 ARG PY_EXTRAS=""   # e.g. "test" or "dev"
 
 ENV PIP_NO_CACHE_DIR=1 \
@@ -35,7 +34,7 @@ ENV PIP_NO_CACHE_DIR=1 \
 # --- System dependencies ---
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python${PYTHON_VERSION} python3-pip python3-venv \
-    git curl wget bash-completion nano vim tmux rsync zip unzip \
+    git curl wget bash-completion nano vim tmux rsync zip unzip less vim \
     htop ripgrep fd-find tree ca-certificates \
     build-essential pkg-config cmake ninja-build ccache bison \
     gtkwave \
@@ -49,7 +48,6 @@ COPY --from=verilator-builder /out/ /
 # --- Environment variables for Keras/JAX ---
 ENV PATH="/usr/local/bin:${PATH}" \
     KERAS_BACKEND=jax \
-    JAX_PLATFORMS=${JAX_PLATFORMS} \
     MKL_NUM_THREADS=1 \
     OPENBLAS_NUM_THREADS=1
 
@@ -63,7 +61,8 @@ ENV VENV_PATH=/opt/venv
 RUN python${PYTHON_VERSION} -m venv ${VENV_PATH}
 ENV PATH="${VENV_PATH}/bin:${PATH}"
 
-RUN pip install --upgrade pip setuptools wheel
+RUN pip install --upgrade pip setuptools wheel jupyter jupyterlab matplotlib scikit-learn pandas torch
+#notebook port
 
 WORKDIR /workspace
 
@@ -95,5 +94,9 @@ RUN if [ -n "${PY_EXTRAS}" ]; then \
     fi
 
 RUN pip install -e .
+
+RUN pip uninstall -y jax jaxlib
+RUN pip install --upgrade "jax[cuda12]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
 
 CMD [ "bash" ]
